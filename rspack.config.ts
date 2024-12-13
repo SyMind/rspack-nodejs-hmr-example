@@ -8,16 +8,16 @@ import nodeExternals from "webpack-node-externals";
 const isDev = process.env.NODE_ENV === "development";
 
 class BootPlugin {
-  booted = false;
+  #booted = false;
 
   apply(compiler: Compiler) {
     compiler.hooks.done.tap("BootPlugin", (stats) => {
-      if (this.booted || stats.hasErrors()) {
+      if (this.#booted || stats.hasErrors()) {
         return;
       }
 
       fork("./dist/main.js", [], { stdio: "inherit" });
-      this.booted = true;
+      this.#booted = true;
     });
   }
 }
